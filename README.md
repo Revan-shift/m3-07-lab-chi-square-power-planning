@@ -120,58 +120,6 @@ def cramers_v(chi2, n, min_dim):
    - Small ≈ 0.10, Medium ≈ 0.30, Large ≈ 0.50 (for 2 × 3 tables, df* = 1)
 4. In a Markdown cell, answer: "Is the relationship between tier and churn weak, moderate, or strong? What does this mean for the marketing team?"
 
-### Task 4: Power Simulation — How Sample Size Affects Detection
-
-Design a simulation that shows how statistical power changes as sample size grows:
-
-1. Fix a "true" distribution of character-class preferences that deviates from uniform — for example, `[0.30, 0.20, 0.28, 0.22]`.
-2. For each sample size in `[50, 100, 200, 400, 800, 1600]`:
-   - Simulate 2 000 datasets by drawing from the true distribution using `np.random.choice`.
-   - Run `st.chisquare` on each simulated dataset (expected = uniform).
-   - Record the fraction of simulations where p < 0.05. This fraction is the estimated power.
-3. Store the results in a DataFrame with columns `sample_size` and `power`.
-4. Create a line plot of power vs. sample size. Add a horizontal dashed line at power = 0.80 (the conventional target).
-5. In a Markdown cell, answer: "Roughly what sample size is needed to reach 80 % power for this effect size?"
-
-### Task 5: A/B Test Sample-Size Calculation
-
-**Scenario:** A product team plans an A/B test. The current checkout-completion rate (control) is 12 %. They want to detect a lift to 15 % (treatment) with 80 % power at α = 0.05.
-
-1. Compute the effect size using `proportion_effectsize(0.15, 0.12)`.
-2. Use `NormalIndPower().solve_power` to find the required sample size per group:
-
-```python
-power_analysis = NormalIndPower()
-n_per_group = power_analysis.solve_power(
-    effect_size=...,
-    alpha=0.05,
-    power=0.80,
-    alternative='two-sided'
-)
-```
-
-3. Report the required n per group and the total sample size.
-4. Create a power curve: fix the effect size and α, then plot power as a function of n (from 100 to 5 000 per group). Mark the calculated n on the curve.
-5. In a Markdown cell, answer: "How many total users does the product team need to enrol? If the site gets 500 new users per day, how many days should the test run?"
-
-### Task 6: Practical Decision Memo
-
-Write a short memo (8–12 sentences across 2–3 paragraphs) addressed to a non-technical stakeholder. The memo should cover:
-
-**Paragraph 1 — Chi-square findings:**
-- Summarise the key result from Tasks 1 and 2 in plain language.
-- State whether the effect is meaningful using Cramér's V.
-
-**Paragraph 2 — A/B test recommendation:**
-- State the required sample size from Task 5.
-- Translate it into a practical timeline (days of data collection).
-- Flag any risks (e.g. what happens if the true lift is smaller than assumed).
-
-**Paragraph 3 — Bottom line:**
-- Give a clear recommendation: run the test, collect more data first, or reconsider the question.
-
-**Tip:** Avoid jargon. Replace "reject H₀" with something like "the data show a meaningful difference." Replace "power = 0.80" with "we'd have an 80 % chance of detecting the improvement if it's real."
-
 ## Submission
 
 ### What to submit
@@ -183,9 +131,6 @@ Write a short memo (8–12 sentences across 2–3 paragraphs) addressed to a non
 - [ ] Chi-square goodness-of-fit test correctly implemented and interpreted
 - [ ] Chi-square test of independence correctly implemented with expected-frequency table
 - [ ] Cramér's V computed and effect size classified
-- [ ] Power simulation produces a clear power-vs-sample-size plot
-- [ ] A/B test sample size calculated and translated into a practical timeline
-- [ ] Decision memo written in plain, non-technical language
 - [ ] Notebook runs top-to-bottom without errors (`Kernel → Restart & Run All`)
 
 ### How to submit (Git workflow)
